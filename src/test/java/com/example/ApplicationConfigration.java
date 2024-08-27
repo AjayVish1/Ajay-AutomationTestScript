@@ -13,6 +13,8 @@ public enum ApplicationConfigration {
     }
     private void loadProperties() {
         properties = new Properties();
+
+
         try (FileInputStream input = new FileInputStream("src/main/resources/Application.properties")) {
             properties.load(input);
         } catch (IOException e) {
