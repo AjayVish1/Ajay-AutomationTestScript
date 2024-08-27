@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="BigFinFishing-Test-Cases">
+    <test name="Auth and Users API Test Case">
+        <classes>
+            <class name="com.example.testclasses.Authentication" />
+            <class name="com.example.testclasses.UserClass"/>
+        </classes>
+    </test>
+</suite>
