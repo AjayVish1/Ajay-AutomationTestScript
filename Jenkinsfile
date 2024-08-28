@@ -1,32 +1,53 @@
 pipeline {
     agent any
 
-
     tools {
-        maven 'maven 3.9.6'
+        // Specify Maven version here if required
+        maven 'Maven 3.6.3'
     }
+
+    environment {
+        // Define environment variables if needed
+        MAVEN_HOME = tool 'Maven 3.6.3'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/AjayVish1/Ajay-AutomationTestScript.git', branch: 'main'
+                // Check out the code from your source control
+                checkout scm
             }
         }
+
         stage('Build') {
             steps {
-                echo 'Building with Maven...'
-                bat 'mvn clean install'
+                // Clean and build the project with Maven
+                sh "'${MAVEN_HOME}/bin/mvn' clean install"
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                bat 'mvn test'
+                // Run tests with Maven
+                sh "'${MAVEN_HOME}/bin/mvn' test"
             }
         }
-        stage('Deploy') {
+
+        stage('Archive Test Results') {
             steps {
-                echo 'Deploying...'
-                // Deployment commands go here
+                // Archive test results
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                // Optional: deploy only on the master branch or specific condition
+                branch 'main'
+            }
+            steps {
+                // Deploy your application
+                // Example: sh "'${MAVEN_HOME}/bin/mvn' deploy"
             }
         }
     }
@@ -36,10 +57,10 @@ pipeline {
             echo 'Pipeline succeeded!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed!'
         }
         always {
-            echo 'This will always run.'
+            echo 'Pipeline finished.'
         }
     }
 }
