@@ -2,52 +2,51 @@ pipeline {
     agent any
 
     tools {
-        // Specify Maven version here if required
+        // Use the exact name configured in Jenkins
         maven 'Maven 3.6.3'
     }
 
     environment {
-        // Define environment variables if needed
-        MAVEN_HOME = tool 'Maven 3.6.3'
+        // Set the Maven home environment variable
+        MAVEN_HOME = tool name: 'Maven 3.6.3', type: 'maven'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Check out the code from your source control
+                // Checkout code from the repository
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Clean and build the project with Maven
+                // Build the project using Maven
                 sh "'${MAVEN_HOME}/bin/mvn' clean install"
             }
         }
 
         stage('Test') {
             steps {
-                // Run tests with Maven
+                // Run tests using Maven
                 sh "'${MAVEN_HOME}/bin/mvn' test"
             }
         }
 
         stage('Archive Test Results') {
             steps {
-                // Archive test results
+                // Archive test results from the Maven surefire reports
                 junit '**/target/surefire-reports/*.xml'
             }
         }
 
         stage('Deploy') {
             when {
-                // Optional: deploy only on the master branch or specific condition
-                branch 'main'
+                branch 'main'  // Only deploy from the 'main' branch
             }
             steps {
-                // Deploy your application
-                // Example: sh "'${MAVEN_HOME}/bin/mvn' deploy"
+                // Deploy the application
+                sh "'${MAVEN_HOME}/bin/mvn' deploy"
             }
         }
     }
