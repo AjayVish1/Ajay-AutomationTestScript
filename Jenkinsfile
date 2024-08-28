@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        // Use the exact name configured in Jenkins
-        maven 'Maven 3.6.3'
-    }
+//     tools {
+//         // Use the exact name configured in Jenkins
+//         maven 'Maven 3.6.3'
+//     }
 
     environment {
         // Set the Maven home environment variable
